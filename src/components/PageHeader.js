@@ -21,13 +21,16 @@ const PageHeader = () => {
   }, []);
 
   return (
-    <nav className="navbar navbar-expand navbar-dark bg-dark">
-      <Link to={"/"} className="navbar-brand">
+    <nav className="navbar navbar-expand navbar-dark bg-dark px-4">
+      <div className="me-auto">
+        <Link to={"/"} className="navbar-brand">
         Xcoins
       </Link>
+      </div>
+      
 
       {currentUser ? (
-        <div className="navbar-nav ml-auto">
+        <div className="navbar-nav">
           <li className="nav-item">
             <Link to={"/profile"} className="nav-link">
               {currentUser.username}
@@ -40,10 +43,15 @@ const PageHeader = () => {
           </li>
         </div>
       ) : (
-        <div className="navbar-nav ml-auto">
+        <div className="navbar-nav">
           <li className="nav-item">
             <Link to={"/login"} className="nav-link">
               Login
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={"/register"} className="nav-link">
+              Register
             </Link>
           </li>
         </div>
