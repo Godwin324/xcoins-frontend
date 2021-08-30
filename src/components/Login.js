@@ -1,14 +1,12 @@
 import { Form, Button } from "react-bootstrap";
 import PageHeader from './PageHeader';
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import ErrorService from "../services/error.service";
 import { Link} from "react-router-dom";
 import AuthService from "../services/auth.service";
 
 const Login = (props) => {
-    const form = useRef();
-    const checkBtn = useRef();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -63,9 +61,6 @@ const Login = (props) => {
         />
     }
 
-    console.log(props);
-
-
     return (
         <div className=" bg-light full-height">
             <PageHeader />
@@ -89,7 +84,7 @@ const Login = (props) => {
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="Keep me signed in" />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" disabled={loading ? true : false}>
                             Submit
                         </Button>
                         <div>

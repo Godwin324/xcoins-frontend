@@ -28,7 +28,7 @@ const logout = () => {
   return axios
     .post(API_URL + "logout", null, { headers: authHeader() })
     .then((response) => {
-      if (response.status = 204) {
+      if (response.status === 204) {
         deleteUser();
       }
     });
@@ -42,10 +42,11 @@ const getCurrentUser = () => {
   return JSON.parse(localStorage.getItem("xcoins-user"));
 };
 
-export default {
+const auth = {
   register,
   login,
   logout,
   deleteUser,
   getCurrentUser,
-};
+}
+export default auth;

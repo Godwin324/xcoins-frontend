@@ -1,21 +1,11 @@
 import { Form, Button } from "react-bootstrap";
 import PageHeader from "./PageHeader";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import AuthService from "../services/auth.service";
 import ErrorService from "../services/error.service";
 import { isEmail } from "validator";
 import { Redirect } from "react-router-dom";
 
-
-const required = (value) => {
-    if (!value) {
-        return (
-            <div className="alert alert-danger" role="alert">
-                This field is required!
-            </div>
-        );
-    }
-};
 
 const validEmail = (value) => {
     if (!isEmail(value)) {
@@ -58,12 +48,10 @@ const validateConfirmPassword = (password, confirm) => {
 };
 
 const Register = () => {
-    const form = useRef();
 
     const [fullname, setFullname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -75,7 +63,6 @@ const Register = () => {
         let err = validName(fullname);
 
         setValidationErrors({ name: err });
-        console.log(validationErrors);
     };
 
     const emailChanged = (e) => {
@@ -103,7 +90,6 @@ const Register = () => {
     const handleRegister = (e) => {
         e.preventDefault();
 
-        console.log(validationErrors);
         const noValidationErrors= Object.values(validationErrors).every(x => x === null || x === '' || x === undefined);
         if (noValidationErrors) {
             AuthService.register(fullname, email, password).then(
@@ -134,7 +120,7 @@ const Register = () => {
                 <div className="col-md-4 card m-3 p-5">
                     <h1>Register</h1>
                     
-                    <Form onSubmit={handleRegister} ref={form}>
+                    <Form onSubmit={handleRegister} >
 
                         <Form.Group className="mb-3" controlId="formBasicText">
                             <Form.Label>Name</Form.Label>
@@ -163,7 +149,7 @@ const Register = () => {
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="Keep me signed in" />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" disabled={loading ? true : false}>
                             Submit
                         </Button>
                     </Form>

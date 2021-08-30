@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PageHeader from "./PageHeader";
-import { Link } from "react-router-dom";
 import ErrorService from "../services/error.service";
 import UserService from "../services/user.service";
 import RateService from "../services/exchange-rate.service";
@@ -19,7 +18,7 @@ const Dashboard = () => {
 
     const [profile, setProfile] = useState({});
     const [rate, setRate] = useState({});
-    const [errors, setErrors] = useState(undefined);
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         const channel = pusher.subscribe("exchange-rate-channel");
@@ -66,6 +65,8 @@ const Dashboard = () => {
                                 <div className="text-center pb-3">
                                     Exchange rates
                                 </div>
+                                {errors.length > 0 ? <div className="alert alert-danger">{errors}</div> : <div></div>}
+
                                 <div className="col-md-4">
                                     <h6>1 BTC</h6>
                                 </div>
