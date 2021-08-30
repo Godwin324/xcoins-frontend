@@ -10,13 +10,17 @@ const PageHeader = () => {
     AuthService.logout().then(() => {
       setCurrentUser(undefined);
       history.push("/login");
+    }).finally(() => {
+      setCurrentUser(undefined);
+      history.push("/login");
+
     });
   };
 
   useEffect(() => {
-    const user = AuthService.getCurrentUser();
-    if (user) {
-      setCurrentUser(user);
+    const userData = AuthService.getCurrentUser();
+    if (userData) {
+      setCurrentUser(userData.user);
     }
   }, []);
 
@@ -31,11 +35,7 @@ const PageHeader = () => {
 
       {currentUser ? (
         <div className="navbar-nav">
-          <li className="nav-item">
-            <Link to={"/profile"} className="nav-link">
-              {currentUser.username}
-            </Link>
-          </li>
+
           <li className="nav-item">
             <a href="#javascript" className="nav-link" onClick={logOut}>
               Logout

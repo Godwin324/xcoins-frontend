@@ -19,7 +19,7 @@ const login = (email, password) => {
     })
     .then((response) => {
       if (response.data.token) {
-        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("xcoins-user", JSON.stringify(response.data));
       }
     });
 };
@@ -28,18 +28,18 @@ const logout = () => {
   return axios
     .post(API_URL + "logout", null, { headers: authHeader() })
     .then((response) => {
-      if (response.data) {
+      if (response.status = 204) {
         deleteUser();
       }
     });
 };
 
 const deleteUser = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("xcoins-user");
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
+  return JSON.parse(localStorage.getItem("xcoins-user"));
 };
 
 export default {

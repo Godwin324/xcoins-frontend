@@ -4,7 +4,7 @@ import AuthService from "../services/auth.service";
 
 const AuthRoute = ({ component: Component, ...rest }) => {
 
-    const currentUser = {user:"me"}//AuthService.getCurrentUser();
+    const currentUser = AuthService.getCurrentUser();
 
     return (
         <Route
@@ -15,7 +15,7 @@ const AuthRoute = ({ component: Component, ...rest }) => {
                 <Component {...props} />
                 ) : (
                     <Redirect
-                        to={{ pathname: "/login", state: { from: props.location } }}
+                        to={{ pathname: "/login", state: { loggedIn:false } }}
                     />
             )
             }
