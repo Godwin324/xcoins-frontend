@@ -48,9 +48,7 @@ const Login = (props) => {
         if (props.location.state.registered === true) {
             message = <div className="alert alert-success" role="alert">You have successfully registered. Please log in</div>
         }
-        if (props.location.state.loggedIn === false) {
-            message = <div className="alert alert-warning" role="alert">You are not logged in please provide your login credentials</div>
-        }
+
     }
 
     let currentUser = AuthService.getCurrentUser();

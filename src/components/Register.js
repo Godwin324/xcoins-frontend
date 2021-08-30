@@ -37,7 +37,7 @@ const validPassword = (value) => {
     }
 };
 
-const validateConfirmPassword = (password, confirm) => {
+const validConfirmPassword = (password, confirm) => {
     if (password !== confirm) {
         return (
             <div className="alert alert-danger" role="alert">
@@ -46,12 +46,28 @@ const validateConfirmPassword = (password, confirm) => {
         );
     }
 };
+const validateAll = (name, email, password, confirmPassword) => {
+
+    let err = validName(name);
+    if (err === undefined) {
+        err = validEmail(email);
+    }
+    if (err === undefined) {
+        err = validPassword(password);
+    }
+    if (err == undefined) {
+        err = validConfirmPassword(password, confirmPassword);
+    }
+    return err;
+
+}
 
 const Register = () => {
 
     const [fullname, setFullname] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState(false);
     const [errors, setErrors] = useState([]);
@@ -61,8 +77,9 @@ const Register = () => {
         const fullname = e.target.value;
         setFullname(fullname);
         let err = validName(fullname);
-
+        
         setValidationErrors({ name: err });
+        console.log(validationErrors);
     };
 
     const emailChanged = (e) => {
@@ -82,7 +99,8 @@ const Register = () => {
     };
     const confirmPasswordChanged = (e) => {
         const confirmPassword = e.target.value;
-        let err = validateConfirmPassword(confirmPassword, password);
+        setConfirmPassword(confirmPassword);
+        let err = validConfirmPassword(confirmPassword, password);
 
         setValidationErrors({ confirmPassword: err });
     };
@@ -90,9 +108,11 @@ const Register = () => {
     const handleRegister = (e) => {
         e.preventDefault();
 
-        const noValidationErrors= Object.values(validationErrors).every(x => x === null || x === '' || x === undefined);
-        if (noValidationErrors) {
-            AuthService.register(fullname, email, password).then(
+        const errorAll = validateAll(fullname, email, password, confirmPassword);
+        setErrors([errorAll]);
+
+        if (errorAll === undefined) {
+            AuthService.register(fullname, email, password, confirmPassword).then(
                 (response) => {
                     setSuccessMessage(response.data.message);
 
@@ -124,30 +144,30 @@ const Register = () => {
 
                         <Form.Group className="mb-3" controlId="formBasicText">
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type="text" placeholder="e.g. Godwin Kalu" value={fullname} onChange={nameChanged} />
+                            <Form.Control type="text" placeholder="e.g. Godwin Kalu" value={fullname} required="true" onChange={nameChanged} />
                             {validationErrors.name}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" onChange={emailChanged} />
+                            <Form.Control type="email" placeholder="Enter email" value={email} required="true" onChange={emailChanged} />
                             {validationErrors.email}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={passwordChanged} />
+                            <Form.Control type="password" placeholder="Password" value={password} required="true" onChange={passwordChanged} />
                             {validationErrors.password}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                             <Form.Label>Retype Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" onChange={confirmPasswordChanged} />
+                            <Form.Control type="password" placeholder="Password" value={confirmPassword} required="true" onChange={confirmPasswordChanged} />
                             {validationErrors.confirmPassword}
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Keep me signed in" />
+                            <Form.Check type="checkbox" label="Agree to terms and conditions" />
                         </Form.Group>
                         <Button variant="primary" type="submit" disabled={loading ? true : false}>
                             Submit
